@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="pashkovskiyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Договоры">
+    <Key>
+      <PropertyRef Name="ID_договора" />
+    </Key>
+    <Property Name="ID_договора" Type="Int32" Nullable="false" />
+    <Property Name="ID_объекта" Type="Int32" Nullable="false" />
+    <Property Name="Номер_договора" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Дата_подписания" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Объекты" Relationship="Self.FK_Договоры_Объекты" FromRole="Договоры" ToRole="Объекты" />
+    <NavigationProperty Name="Задачи_монтажа" Relationship="Self.FK_Задачи_монтажа_Договоры" FromRole="Договоры" ToRole="Задачи_монтажа" />
+  </EntityType>
+  <EntityType Name="Задачи_монтажа">
+    <Key>
+      <PropertyRef Name="Id_задачи" />
+    </Key>
+    <Property Name="Id_задачи" Type="Int32" Nullable="false" />
+    <Property Name="Id_договор" Type="Int32" Nullable="false" />
+    <Property Name="Плановая_дата" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Статус" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Договоры" Relationship="Self.FK_Задачи_монтажа_Договоры" FromRole="Задачи_монтажа" ToRole="Договоры" />
+    <NavigationProperty Name="Транспорт" Relationship="Self.Состав_монтажа" FromRole="Задачи_монтажа" ToRole="Транспорт" />
+  </EntityType>
+  <EntityType Name="Объекты">
+    <Key>
+      <PropertyRef Name="ID_объекта" />
+    </Key>
+    <Property Name="ID_объекта" Type="Int32" Nullable="false" />
+    <Property Name="Адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Название_объекта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Заказчик" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Договоры" Relationship="Self.FK_Договоры_Объекты" FromRole="Объекты" ToRole="Договоры" />
+  </EntityType>
+  <EntityType Name="Транспорт">
+    <Key>
+      <PropertyRef Name="id_транспорта" />
+    </Key>
+    <Property Name="id_транспорта" Type="Int32" Nullable="false" />
+    <Property Name="Гос_номер" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Марка_машины" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="тип" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Задачи_монтажа" Relationship="Self.Состав_монтажа" FromRole="Транспорт" ToRole="Задачи_монтажа" />
+  </EntityType>
+  <Association Name="FK_Договоры_Объекты">
+    <End Role="Объекты" Type="Self.Объекты" Multiplicity="1" />
+    <End Role="Договоры" Type="Self.Договоры" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Объекты">
+        <PropertyRef Name="ID_объекта" />
+      </Principal>
+      <Dependent Role="Договоры">
+        <PropertyRef Name="ID_объекта" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Задачи_монтажа_Договоры">
+    <End Role="Договоры" Type="Self.Договоры" Multiplicity="1" />
+    <End Role="Задачи_монтажа" Type="Self.Задачи_монтажа" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Договоры">
+        <PropertyRef Name="ID_договора" />
+      </Principal>
+      <Dependent Role="Задачи_монтажа">
+        <PropertyRef Name="Id_договор" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Состав_монтажа">
+    <End Role="Задачи_монтажа" Type="Self.Задачи_монтажа" Multiplicity="*" />
+    <End Role="Транспорт" Type="Self.Транспорт" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="pashkovskiyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Договоры" EntityType="Self.Договоры" />
+    <EntitySet Name="Задачи_монтажа" EntityType="Self.Задачи_монтажа" />
+    <EntitySet Name="Объекты" EntityType="Self.Объекты" />
+    <EntitySet Name="Транспорт" EntityType="Self.Транспорт" />
+    <AssociationSet Name="FK_Договоры_Объекты" Association="Self.FK_Договоры_Объекты">
+      <End Role="Объекты" EntitySet="Объекты" />
+      <End Role="Договоры" EntitySet="Договоры" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Задачи_монтажа_Договоры" Association="Self.FK_Задачи_монтажа_Договоры">
+      <End Role="Договоры" EntitySet="Договоры" />
+      <End Role="Задачи_монтажа" EntitySet="Задачи_монтажа" />
+    </AssociationSet>
+    <AssociationSet Name="Состав_монтажа" Association="Self.Состав_монтажа">
+      <End Role="Задачи_монтажа" EntitySet="Задачи_монтажа" />
+      <End Role="Транспорт" EntitySet="Транспорт" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

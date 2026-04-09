@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище pashkovskiyModelContainer" CdmEntityContainer="pashkovskiyEntities">
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="pashkovskiyModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Договоры">
+      <EntityTypeMapping TypeName="pashkovskiyModel.Договоры">
+        <MappingFragment StoreEntitySet="Договоры">
+          <ScalarProperty Name="ID_договора" ColumnName="ID_договора" />
+          <ScalarProperty Name="ID_объекта" ColumnName="ID_объекта" />
+          <ScalarProperty Name="Номер_договора" ColumnName="Номер_договора" />
+          <ScalarProperty Name="Дата_подписания" ColumnName="Дата_подписания" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Задачи_монтажа">
+      <EntityTypeMapping TypeName="pashkovskiyModel.Задачи_монтажа">
+        <MappingFragment StoreEntitySet="Задачи_монтажа">
+          <ScalarProperty Name="Id_задачи" ColumnName="Id_задачи" />
+          <ScalarProperty Name="Id_договор" ColumnName="Id_договор" />
+          <ScalarProperty Name="Плановая_дата" ColumnName="Плановая_дата" />
+          <ScalarProperty Name="Статус" ColumnName="Статус" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Объекты">
+      <EntityTypeMapping TypeName="pashkovskiyModel.Объекты">
+        <MappingFragment StoreEntitySet="Объекты">
+          <ScalarProperty Name="ID_объекта" ColumnName="ID_объекта" />
+          <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+          <ScalarProperty Name="Название_объекта" ColumnName="Название_объекта" />
+          <ScalarProperty Name="Заказчик" ColumnName="Заказчик" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Транспорт">
+      <EntityTypeMapping TypeName="pashkovskiyModel.Транспорт">
+        <MappingFragment StoreEntitySet="Транспорт">
+          <ScalarProperty Name="id_транспорта" ColumnName="id_транспорта" />
+          <ScalarProperty Name="Гос_номер" ColumnName="Гос_номер" />
+          <ScalarProperty Name="Марка_машины" ColumnName="Марка_машины" />
+          <ScalarProperty Name="тип" ColumnName="тип" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Состав_монтажа" TypeName="pashkovskiyModel.Состав_монтажа" StoreEntitySet="Состав_монтажа">
+      <EndProperty Name="Задачи_монтажа">
+        <ScalarProperty Name="Id_задачи" ColumnName="ID_задачи" />
+      </EndProperty>
+      <EndProperty Name="Транспорт">
+        <ScalarProperty Name="id_транспорта" ColumnName="ID_транспорта" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

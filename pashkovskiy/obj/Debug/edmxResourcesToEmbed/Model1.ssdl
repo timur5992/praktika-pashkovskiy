@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище pashkovskiyModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Договоры">
+    <Key>
+      <PropertyRef Name="ID_договора" />
+    </Key>
+    <Property Name="ID_договора" Type="int" Nullable="false" />
+    <Property Name="ID_объекта" Type="int" Nullable="false" />
+    <Property Name="Номер_договора" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Дата_подписания" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Задачи_монтажа">
+    <Key>
+      <PropertyRef Name="Id_задачи" />
+    </Key>
+    <Property Name="Id_задачи" Type="int" Nullable="false" />
+    <Property Name="Id_договор" Type="int" Nullable="false" />
+    <Property Name="Плановая_дата" Type="date" Nullable="false" />
+    <Property Name="Статус" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Объекты">
+    <Key>
+      <PropertyRef Name="ID_объекта" />
+    </Key>
+    <Property Name="ID_объекта" Type="int" Nullable="false" />
+    <Property Name="Адрес" Type="nvarchar" MaxLength="50" />
+    <Property Name="Название_объекта" Type="nvarchar" MaxLength="50" />
+    <Property Name="Заказчик" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Состав_монтажа">
+    <Key>
+      <PropertyRef Name="ID_задачи" />
+      <PropertyRef Name="ID_транспорта" />
+    </Key>
+    <Property Name="ID_задачи" Type="int" Nullable="false" />
+    <Property Name="ID_транспорта" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Транспорт">
+    <Key>
+      <PropertyRef Name="id_транспорта" />
+    </Key>
+    <Property Name="id_транспорта" Type="int" Nullable="false" />
+    <Property Name="Гос_номер" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Марка_машины" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="тип" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Договоры_Объекты">
+    <End Role="Объекты" Type="Self.Объекты" Multiplicity="1" />
+    <End Role="Договоры" Type="Self.Договоры" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Объекты">
+        <PropertyRef Name="ID_объекта" />
+      </Principal>
+      <Dependent Role="Договоры">
+        <PropertyRef Name="ID_объекта" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Задачи_монтажа_Договоры">
+    <End Role="Договоры" Type="Self.Договоры" Multiplicity="1" />
+    <End Role="Задачи_монтажа" Type="Self.Задачи_монтажа" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Договоры">
+        <PropertyRef Name="ID_договора" />
+      </Principal>
+      <Dependent Role="Задачи_монтажа">
+        <PropertyRef Name="Id_договор" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Состав_монтажа_Задачи_монтажа">
+    <End Role="Задачи_монтажа" Type="Self.Задачи_монтажа" Multiplicity="1" />
+    <End Role="Состав_монтажа" Type="Self.Состав_монтажа" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Задачи_монтажа">
+        <PropertyRef Name="Id_задачи" />
+      </Principal>
+      <Dependent Role="Состав_монтажа">
+        <PropertyRef Name="ID_задачи" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Состав_монтажа_Транспорт">
+    <End Role="Транспорт" Type="Self.Транспорт" Multiplicity="1" />
+    <End Role="Состав_монтажа" Type="Self.Состав_монтажа" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Транспорт">
+        <PropertyRef Name="id_транспорта" />
+      </Principal>
+      <Dependent Role="Состав_монтажа">
+        <PropertyRef Name="ID_транспорта" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище pashkovskiyModelContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Договоры" EntityType="Self.Договоры" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Задачи_монтажа" EntityType="Self.Задачи_монтажа" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Объекты" EntityType="Self.Объекты" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Состав_монтажа" EntityType="Self.Состав_монтажа" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Транспорт" EntityType="Self.Транспорт" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Договоры_Объекты" Association="Self.FK_Договоры_Объекты">
+      <End Role="Объекты" EntitySet="Объекты" />
+      <End Role="Договоры" EntitySet="Договоры" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Задачи_монтажа_Договоры" Association="Self.FK_Задачи_монтажа_Договоры">
+      <End Role="Договоры" EntitySet="Договоры" />
+      <End Role="Задачи_монтажа" EntitySet="Задачи_монтажа" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Состав_монтажа_Задачи_монтажа" Association="Self.FK_Состав_монтажа_Задачи_монтажа">
+      <End Role="Задачи_монтажа" EntitySet="Задачи_монтажа" />
+      <End Role="Состав_монтажа" EntitySet="Состав_монтажа" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Состав_монтажа_Транспорт" Association="Self.FK_Состав_монтажа_Транспорт">
+      <End Role="Транспорт" EntitySet="Транспорт" />
+      <End Role="Состав_монтажа" EntitySet="Состав_монтажа" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
